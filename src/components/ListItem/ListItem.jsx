@@ -1,19 +1,21 @@
-import { useContext } from 'react';
-import { AppContext } from '../../context';
+import { useDispatch, useSelector } from 'react-redux';
+import { favoritesActions } from '../../store/favorites';
 import Heart from '../Heart';
 import './ListItem.css';
 
 function ListItem({ item }) {
-    const appContext = useContext(AppContext);
+    const favorites = useSelector(({ favorites }) => favorites);
+    const dispatch = useDispatch();
+
     const { name, sprites } = item;
     const sprite = sprites.other['official-artwork'].front_default;
-    const isFavorite = appContext.favorites?.includes(item.id) || false;
+    const isFavorite = favorites.includes(item.id);
 
     const handleClick = () => {
         if (isFavorite) {
-            appContext.remove(item);
+            dispatch(favoritesActions.remove(item));
         } else {
-            appContext.add(item);
+            dispatch(favoritesActions.add(item));
         }
     }
 
